@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Converted Markdown</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+</head>
+<body>
+  <p>投稿日 2023年03月21日</p>
+<h1>MacでMAMPのMySQLを操作する方法を一通り説明する</h1>
+<p>MySQLの起動→データベース作成→テーブル作成→テーブル削除→データベース削除→MySQLの停止の順で説明する。</p>
+<p>MacでMAMPのMySQLを操作する方法を一通り知りたい場合は、下記のコードを上から順に実行していくと良い。</p>
+<h2>１、MAMPアプリケーションを開き、STARTボタンを押して、起動する。</h2>
+<h2>２、Macのターミナルを開き、mysqlのパスに移動して、MySQLを起動する。</h2>
+<p>方法１か方法２を実行する。</p>
+<p>mysqlのユーザ名とパスワードはデフォルトでは、rootである。
+MySQLのパスワードを設定していない場合は、""かEnterだと勘違いしていたので手間取った。</p>
+<h3>方法１</h3>
+<pre><code class="language-bash">% cd /Applications/MAMP/Library/bin/
+% ./mysql -u root -p
+// Enter password: ←MySQLのパスワードを設定していない場合はroot
+//Welcome to the MySQL monitor
+</code></pre>
+<p>これでMySQLが起動できた。</p>
+<h3>方法2</h3>
+<p>MySQLのホストとポート番号を指定する。</p>
+<pre><code class="language-bash">% cd /Applications/MAMP/Library/bin/
+% ./mysql --host = localhost -uroot -proot -P8889
+</code></pre>
+<h2>2,データベースを見る</h2>
+<pre><code class="language-sql">SHOW DATABASES;
+</code></pre>
+<h2>3,データベースを作成</h2>
+<p>database_nameという名前のデータベースを作成</p>
+<pre><code class="language-sql">CREATE DATABASE database_name;
+</code></pre>
+<h2>4,特定のデータベースを使用する</h2>
+<p>USE文を使って、現在の作業用データベースを指定できる。
+以降のSQL文は、このデータベース上で実行される。
+database_nameを作業用データベースとして設定する場合は以下のコードを実行する。</p>
+<pre><code class="language-sql">USE database_name;
+</code></pre>
+<h2>5,データベースにテーブルを作成</h2>
+<p>４の通りにdatabase_nameという名前のデータベースに移動した状態で、table_nameテーブルを作る。</p>
+<p>テーブルはデータベースに所属していてデータベース内で一意である。テーブルの操作を行うには、どのデータベースに所属しているテーブルなのかを明確にする必要がある。</p>
+<pre><code class="language-sql">CREATE TABLE table_name (
+       id INT,
+       name VARCHAR(50),
+      );
+</code></pre>
+<p>table_nameという名前のテーブルに、idとnameという2つのカラムを定義した。<br />
+idは整数型(INT)、nameは文字列型(VARCHAR)にした。</p>
+<h2>6,テーブルのカラムを確認</h2>
+<pre><code class="language-sql">DESC table_name;
+</code></pre>
+<h2>7,テーブルにデータを挿入する</h2>
+<pre><code class="language-sql">INSERT INTO table_name (id, name) VALUES (1, 'yume');
+</code></pre>
+<h2>8,テーブルのデータを見る</h2>
+<pre><code class="language-sql">SELECT * FROM table_name;
+</code></pre>
+<p>*を使用することで、すべてのカラムのデータが取得される。
+特定のカラムだけを指定することも可能。</p>
+<h2>9,テーブルを削除</h2>
+<pre><code class="language-sql">　DROP TABLE table_name;
+</code></pre>
+<h2>10,データベースを削除</h2>
+<pre><code class="language-sql">DROP DATABASE database_name;
+</code></pre>
+<h2>11,MySQLサーバーを停止</h2>
+<pre><code class="language-sql">exit;
+</code></pre>
+<h2>番外編、MySQLのステータス確認方法</h2>
+<p>ステータス情報には、MySQLサーバーのバージョン、現在のデータベース名、現在のユーザ、接続されているクライアントのIPアドレスなどの情報が含まれている。</p>
+<pre><code class="language-sql">status;
+</code></pre>
+<script>hljs.highlightAll();</script>
+</body>
+</html>

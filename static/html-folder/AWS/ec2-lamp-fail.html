@@ -1,0 +1,38 @@
+
+<!DOCTYPE html>
+<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Converted Markdown</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+</head>
+<body>
+  <p>投稿日　2023年3月21日</p>
+<h1>LAMPをEC2にインストールする（失敗し断念）</h1>
+<h2>失敗した方法</h2>
+<p>AWSのチュートリアルに従ってLAMPをEC2にインストールする。</p>
+<p>参照：</p>
+<p><a href="https://docs.aws.amazon.com/ja_jp/AWSEC2/latest/UserGuide/install-LAMP.html" target="_blank">チュートリアル: Amazon Linux AMI への LAMP ウェブサーバーのインストール</a></p>
+<p>Amazon Linux AMIのec2にLAMPをインストールしようとしたが、下のコマンドができなかった。</p>
+<pre><code class="language-bash">sudo yum install -y httpd24 php72 mysql57-server php72-mysqlnd
+
+// Last metadata expiration check: 4:37:06 ago on Mon Mar 20 01:48:33 2023.
+// No match for argument: httpd24
+// No match for argument: php72
+// No match for argument: mysql57-server
+// No match for argument: php72-mysqlnd
+// Error: Unable to find a match: httpd24 php72 mysql57-server php72-mysqlnd
+
+</code></pre>
+<p>原因を調べてみても、うまくいっている例が見つからなかった。
+チュートリアルの記事が古いかもしれないので、断念した。</p>
+<p>webでよくあるAmazon Linux 2のec2インスタンス上にLAMPを構成することにする。</p>
+<script>hljs.highlightAll();</script>
+</body>
+</html>

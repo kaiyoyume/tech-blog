@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+
+        function setfiletomain(fname){
+            const el = document.getElementById("mainframe");
+            el.setAttribute("src", fname);
+
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("backButton").addEventListener("click", function () {
+                var iframe = document.getElementById("mainframe");
+                iframe.contentWindow.history.back();
+            });
+
+            document.getElementById("forwardButton").addEventListener("click", function () {
+                var iframe = document.getElementById("mainframe");
+                iframe.contentWindow.history.forward();
+            });
+        });
+    </script>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
+        #grid-container {
+            display: grid;
+            grid-template-columns: 300px 1fr; /*2列*/
+            grid-template-rows: 80px 1fr 60px; /*３行*/
+            height: 100%;
+        }
+        .grid-item {
+            padding:5px 20px;
+            box-sizing: border-box;
+        }
+        #header {
+            background-color: lightblue;
+            grid-column: 1 / span 2;
+            display: flex;
+        }
+        button {
+            background-color: lightblue;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+        #file-tree {
+            background-color: #d3f6d3;
+        }
+        #main {
+            padding:0px 20px;
+            background-color: #ffffff;
+        }
+        #footer {
+            background-color: lightblue;
+            grid-column: 1 / span 2;
+        }
+        iframe {
+            /*position: absolute;*/
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="grid-container">
+        <div id="header" class="grid-item">
+            <button id="backButton">←戻る</button>
+            <button id="forwardButton">進む→</button>
+            <h2>kaiyo-yumeの技術ブログ</h2>
+            <!-- ヘッダーの内容をここに記述 -->
+        </div>
+        <div id="file-tree" class="grid-item">
+            <iframe src="/static/output.html"></iframe>
+        </div>
+        <div id="main" class="grid-item">
+            <iframe id="mainframe" src="/static/はじめに.html"></iframe>
+        </div>
+        <div id="footer" class="grid-item">
+            <p>フッター</p>
+            <!-- フッターの内容をここに記述 -->
+        </div>
+    </div>
+</body>
+</html>
+

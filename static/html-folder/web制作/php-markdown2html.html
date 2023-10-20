@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Converted Markdown</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+</head>
+<body>
+  <p>投稿日 2023年03月21日</p>
+<h1>PHPを使用して、Markdownファイルをブラウザに表示する</h1>
+<p>htmlファイルの作成に慣れていないので、Markdown形式のファイルを書いてHTML形式に変換することにした。</p>
+<p>私はlamp構成のMAMPでwebページを作っているので、phpを使用して変換した。<br />
+まず「PHP Markdown」というライブラリをダウンロードして使用してみたが、上手くいかなった。</p>
+<p>PHPのパッケージ管理ソフトであるcomposerを使用したら上手くいったのでその方法を書いていく。 </p>
+<h2>macのターミナルを起動</h2>
+<p>ターミナルでcomposerをダウンロードしていく。
+どこのディレクトリでダウンロードしてもいいらしいので、私は~/Documents上で行った。</p>
+<h2>composerをダウンロード</h2>
+<p>下のリンクからcomposerをダウンロードする。
+https://getcomposer.org/download
+ターミナルで各行を実行してcomposerをダウンロードする。</p>
+<pre><code class="language-bash">$ php -r &quot;copy('https://getcomposer.org/installer', 'composer-setup.php');&quot;
+$ php -r &quot;if (hash_file('sha384', 'composer-setup.php') === '55ce33d7678c5a611085589f1f3ddf8b3c52d662cd01d4ba75c0ee0459970c2200a51f492d557530c71c15d8dba01eae') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;&quot;
+$ php composer-setup.php
+$ php -r &quot;unlink('composer-setup.php');&quot;
+</code></pre>
+<p>各行が何をしているかというと、<br />
+1. 現在のディレクトリにインストーラをダウンロードする<br />
+2. インストーラを検証する<br />
+3. インストーラを実行する<br />
+4. インストーラを削除する  </p>
+<p>4を実行後にlsコマンドで確認してみるとカレントディレクトリにcomposer.pharがある。    </p>
+<h2>composer.pharを移動</h2>
+<p>下記のコマンドで、ローカルのディレクトリからcomposer.pharファイルを /usr/local/bin/composer に移動する。<br />
+これで、どのディレクトリからでも composer コマンドを実行できるようになる。</p>
+<p>このコマンドは sudo コマンドを使って実行されるので、root権限が必要である。  </p>
+<pre><code class="language-bash">$ sudo mv composer.phar /usr/local/bin/composer
+#Password: パスワードが求められるので自分のmacのログインパスワードを入れる。
+</code></pre>
+<h2>composerがインストールされているか確認する。</h2>
+<pre><code class="language-bash">$ composer
+
+#Composer version 2.5.4 2023-02-15 13:10:06
+</code></pre>
+<h2>michelf/php-markdownをインストール</h2>
+<p>michelf/php-markdownは、Markdown形式のテキストをHTMLに変換するためのライブラリ。<br />
+下記のコマンドを実行してダウンロードする。</p>
+<pre><code class="language-bash">$ composer require michelf/php-markdown
+</code></pre>
+<p>私の場合は~/Document上でインストールしたので、"ls ~/Document/vendor"でvendorフォルダにautoload.php、composer、michelfがあることが確認できる。</p>
+<h2>markdown形式（拡張がmd）のファイルを作成</h2>
+<p>私はVSCodeでMAMPのhtdocディレクトリを開きそこに、htdoc.mdファイルを作った。<br />
+下記がhtdoc.mdのコードである。</p>
+<pre><code class="language-md"># 見出し1
+
+これは本文の一部です。**太字** や *斜体* にすることができます。
+
+## 見出し2
+
+- リストアイテム1
+- リストアイテム2
+- リストアイテム3
+
+### 見出し3
+
+1. 番号付きリストアイテム1
+2. 番号付きリストアイテム2
+3. 番号付きリストアイテム3
+
+#### 見出し4
+
+[リンクのテキスト](https://www.example.com)
+
+##### 見出し5
+</code></pre>
+<h2>PHPファイルにmarkdown形式のファイルを読み込み、html形式に変換してwebページに表示されるようにする。</h2>
+<p>htdoc.mdと同じディレクトリにb.phpファイルを作る。<br />
+違うディレクトリに作ってもいいが、パスの指定が面倒である。<br />
+b.phpファイルのコードを下に載せる。  </p>
+<p>＜コマンドの説明＞
+- require：ファイルを呼び出す<br />
+- use：名前空間のパスを短くする<br />
+- file_get_contents（）：ファイル読み込み<br />
+- Markdown::defaultTransform()：MarkdownをHTMLに変換  </p>
+<p>＜コードを自分用に書き直したい場合＞
+1. require文はvendor/autoload.phpのパスを指定する。<br />
+vendor/autoload.phpが~/Documentsにある場合はlocalを自分の名前に書き換えればOK。（ターミナルに'whoami'と入力すれば自分の名前がわかる。）
+2. file_get_contentsの引数は表示したいMarkdown形式のファイルのパス名を記入する。</p>
+<p>b.phpファイル</p>
+<pre><code class="language-php">&lt;?php
+//Composerでインストールされたphp-markdownのautoloadingを行う
+require '/Users/local/Documents/vendor/autoload.php';
+use Michelf\Markdown;
+
+// Markdown形式のテキストファイルを読み込む
+$text = file_get_contents('hdoc.md');
+
+// MarkdownをHTMLに変換する
+$html = Markdown::defaultTransform($text);
+
+// HTMLを表示する
+echo $html;
+?&gt;
+</code></pre>
+<p>b.phpファイルをブラウザで表示する。</p>
+<p><img src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/3268288/18726417-4ed1-5b24-04e2-3d645bfa781c.png" alt="説明テキスト" width="600" height="400" /></p>
+<h2>＜改良版＞PHPファイルにmarkdown形式のファイルを読み込みから、HTMLファイルとしてブラウザに出力するまでを関数にする。</h2>
+<p>htdoc.mdと同じディレクトリにbb.phpファイルを作る。<br />
+先程のb.phpファイルからの変更箇所は、関数化したところと、requireをrequire_onceにしたところである。</p>
+<p>関数化したのは、複数のMarkdown形式のファイルの読み込みを容易に行えるようにするためである。</p>
+<p>同じファイルを何度もrequireすると、同じコードが何度も実行されることになるので、パフォーマンス上の問題やクラスや関数の重複宣言によるエラーも発生する可能性があるらしい。<br />
+この問題を回避するために、require_once関数を使用してみた。<br />
+require_onceは、指定されたファイルが既に読み込まれている場合には、再度読み込まないようにするためのものである。</p>
+<p>bb.php</p>
+<pre><code class="language-php">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ja&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;ie=edge&quot;&gt;
+  &lt;title&gt;Document&lt;/title&gt;
+  &lt;?php
+    require_once '~/Documents/vendor/autoload.php';
+    use Michelf\Markdown;
+    // Markdown形式のテキストファイルを読み込む
+    function f($t){
+        $text = file_get_contents($t);
+        $html = Markdown::defaultTransform($text);
+        echo $html;
+    }
+    ?&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;?php
+    f('hdoc.md');
+    ?&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>bb.phpをブラウザで確認する。</p>
+<p><img src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/3268288/e45dce05-3227-ce74-601a-8b3f9532b44a.png" alt="説明テキスト" width="600" height="400" /></p>
+<script>hljs.highlightAll();</script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+
+<!DOCTYPE html>
+<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Converted Markdown</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+</head>
+<body>
+  <p>投稿日 2023年03月22日</p>
+<h1>２台のMacを公開鍵暗号方式でssh接続した</h1>
+<p>AWSのEC2をMacのターミナルから操作したいと思い、練習としてmac同士をssh接続してみた。</p>
+<h4>まず２台のMacの役割の割り振りを決める。</h4>
+<p>私は家族に借りたMacをサーバ、自分のMacをクライアントと定めた。</p>
+<h4>まず、接続先のMacにリモートログインを許可する必要がある。</h4>
+<p>「システム環境設定」を開き、「共有」をクリックし、左側のサイドバーで「リモートログイン」を選択する。  </p>
+<p>そこで、リモートログインを許可するユーザーアカウントを選択する。</p>
+<h4>公開鍵と秘密鍵の生成</h4>
+<p>接続元のMacで公開鍵と秘密鍵を生成する。
+次のコマンドを使用して、鍵を生成する。</p>
+<pre><code class="language-bash">ssh-keygen -t rsa
+</code></pre>
+<p>このコマンドを実行すると、鍵の生成場所を尋ねられる。
+デフォルトの場所（/Users/ユーザ名/.ssh）にした。</p>
+<p>もし、.sshフォルダがなければ作る。検索したら簡単に作れるので省略する。</p>
+<h4>公開鍵の転送</h4>
+<p>次に、接続先のMacに公開鍵を転送する必要がある。
+次のコマンドを使用して、公開鍵を転送する。</p>
+<pre><code class="language-bash">ssh-copy-id &lt;接続先のユーザ名&gt;@&lt;接続先のIPアドレス&gt;
+</code></pre>
+<p>このコマンドを実行すると、接続先のMacにログインするためのパスワードが求められる。
+接続先のMacのログインパスワードを入力する。</p>
+<p>接続先のユーザ名は、接続先のMacのターミナルウィンドウで'whoami'と入力すれば確認できる。  </p>
+<p>接続先のIPアドレスは、接続先のMacの「システム環境設定」→「ネットワーク」→「詳細」→「TCP/IP」に載っているIPv4アドレスを入力する。</p>
+<h4>SSH接続</h4>
+<p>公開鍵が転送されたら、接続先のMacにSSH接続できる。</p>
+<pre><code class="language-bash">ssh &lt;接続先のユーザ名&gt;@&lt;接続先のIPアドレス&gt;
+</code></pre>
+<p>このコマンドを実行すると、公開鍵を使用して接続先のMacに自動的にログインされる。</p>
+<h4>SSH接続を終了</h4>
+<p>以下のコマンドを実行する</p>
+<pre><code class="language-bash">exit
+</code></pre>
+<script>hljs.highlightAll();</script>
+</body>
+</html>

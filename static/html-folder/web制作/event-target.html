@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Converted Markdown</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+</head>
+<body>
+  <p>投稿日 2023年03月30日</p>
+<h1>ファイルツリー全体にonclick属性を付加する。ツリーの中のどの要素がクリックをされたのかを特定する方法の下調べ</h1>
+<h2>結論</h2>
+<p>event.targetを使えば簡単に書ける。<br />
+ファイルツリーにはフォルダとファイルがある。<br />
+それぞれに、クラス名（class="folder"、class="file"）を付加する。<br />
+onclickが発生すると、要素を特定する。<br />
+要素のクラスを見て、処理を変える。<br />
+ファイル（class="file"）の場合は、テキストを取り出してmainに表示する。<br />
+フォルダ（class="folder"）の場合は、表示をtoggleする。  </p>
+<p>displayのプロパティnoneと、blockをtoggleする。</p>
+<h2>targetの使い方の例</h2>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;Simple Block Element with OnClick&lt;/title&gt;
+  &lt;script&gt;
+    function handleDivClick(event) {
+      const target = event.target;
+
+      if (target.tagName === 'BUTTON') {
+        alert(`You clicked on: ${target.textContent}`);
+      }
+    }
+  &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div id=&quot;container&quot; onclick=&quot;handleDivClick(event)&quot; style=&quot;border: 1px solid black; padding: 20px;&quot;&gt;
+    &lt;button id=&quot;button1&quot;&gt;Button 1&lt;/button&gt;
+    &lt;button id=&quot;button2&quot;&gt;Button 2&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<script>hljs.highlightAll();</script>
+</body>
+</html>

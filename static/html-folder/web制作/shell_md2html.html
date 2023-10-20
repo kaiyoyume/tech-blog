@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Converted Markdown</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+</head>
+<body>
+  <p>投稿日 2023年03月22日</p>
+<h1>ディレクトリ内のMarkdownファイルを全てHTMLに変換するシェルスクリプトを作る</h1>
+<ul>
+<li>
+<p>指定されたディレクトリ内のMarkdownファイルをHTMLに変換するためのスクリプトを作る。</p>
+</li>
+<li>
+<p>変換されたHTMLファイルは、元のMarkdownファイルと同じディレクトリに保存される。</p>
+</li>
+<li>
+<p>変換後のHTMLファイルがすでに存在していて、元のMarkdownファイルよりも新しい場合は変換しないようにしている。</p>
+</li>
+</ul>
+<p>以下のコードをsh拡張子のファイルで保存する。</p>
+<pre><code class="language-bash">#シェルの宣言
+#!/bin/bash　
+
+#パラメータとして渡されたディレクトリを変数directoryに格納
+directory=$1
+
+#ディレクトリが指定されていない場合、スクリプトの使用方法を出力して、スクリプトを終了
+if [ -z &quot;$directory&quot; ]
+then
+    echo &quot;Usage: convert_md_to_html.sh [directory]&quot;
+    exit 1
+fi
+
+#forループを使用して、ディレクトリ内のMarkdownファイルを１つずつ処理
+for file in &quot;$directory&quot;/*.md; do
+    html_file=&quot;${file%.md}.html&quot; #変換後のHTMLファイル名を作成
+
+    #変換後のHTMLファイルがすでに存在、かつ元のMarkdownファイルよりも新しい場合は、処理をスキップ
+    if [ -e &quot;$html_file&quot; ] &amp;&amp; [ $(date -r &quot;$html_file&quot; +%s) -ge $(date -r &quot;$file&quot; +%s) ]; then
+        echo &quot;Skipping $file - $html_file already exists and is newer than $file&quot;
+    else
+        pandoc -s &quot;$file&quot; -o &quot;$html_file&quot;    #MarkdownファイルをHTMLに変換
+        echo &quot;Converted $file to $html_file&quot; #処理されたファイル名を表示
+    fi
+done
+</code></pre>
+<h2>このシェルスクリプトの使い方</h2>
+<p>私はmdフォルダを作り、Markdown形式のファイルをそこに保存している。
+上のシェルスクリプトもchange.shという名前でMarkdownフォルダ内に保存する。
+Macのターミナルで、mdフォルダに移動して以下のコマンドを実行。</p>
+<pre><code class="language-bash">sh change.sh .
+</code></pre>
+<p>これで、mdフォルダ内のMarkdownファイルを変換できる。</p>
+<script>hljs.highlightAll();</script>
+</body>
+</html>

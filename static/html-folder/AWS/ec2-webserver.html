@@ -1,0 +1,38 @@
+
+<!DOCTYPE html>
+<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Converted Markdown</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+</head>
+<body>
+  <p>投稿日　2023年3月22日</p>
+<h1>AWS上にWebサーバを作成した</h1>
+<h2>EC2を立てる。</h2>
+<ul>
+<li>Amazon マシンイメージはAmazon linux 2　AMI（無料枠）を選択。</li>
+<li>キーペアを作成。</li>
+<li>セキュリティグループは、
+インバウンドルールはhttp、httpsはすべてのIPアドレスを許可、sshは自分のIPを許可した。<br />
+アウトバンドルールは全面的に許可した</li>
+<li>他の設定はデフォルトのままにした。</li>
+</ul>
+<h2>Elastic IPアドレスをEC2に割り当てる</h2>
+<p>検索すれば記事がたくさんあるので説明は省略。</p>
+<h2>Macからssh接続</h2>
+<p>参照：</p>
+<p><a href="mac-ec2-connect.html">AWSのEC2インスタンスへMacからSSH接続する（接続失敗の解決策も記載）</a></p>
+<h2>LAMP構成のwebサーバをEC2にインストール</h2>
+<p>AWSのチュートリアルに従ってインストールする。</p>
+<p><a href="https://docs.aws.amazon.com/ja_jp/AWSEC2/latest/UserGuide/ec2-lamp-amazon-linux-2.html" target="_blank">チュートリアル: Amazon Linux 2 に LAMP ウェブサーバーをインストールする</a></p>
+<p>これで、Webサーバの構築終了。</p>
+<script>hljs.highlightAll();</script>
+</body>
+</html>

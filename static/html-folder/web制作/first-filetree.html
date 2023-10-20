@@ -1,0 +1,153 @@
+
+<!DOCTYPE html>
+<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Converted Markdown</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+</head>
+<body>
+  <p>投稿日 2023年03月23日 更新日 2023年04月02日</p>
+<h1>ライブラリを使用せずに、簡単なFileTreeを作成する</h1>
+<p>chatGPT4に「ライブラリを使用しないで、filetreeを作る」と入力したら、希望通りに実装してくれた。</p>
+<h2>htmlファイル(filetree.html)：</h2>
+<h3>フォルダはspanタグとulタグで構成する。</h3>
+<ul>
+<li><strong>ulタグでフォルダを表す。</strong></li>
+<li><strong>フォルダ名をつけるのとフォルダの開閉の操作をするために、ulタグの上にspanタグを置く。</strong></li>
+</ul>
+<p>まずはここまでを理解するのが重要である。
+後の説明は、コードの後ろに書く。</p>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ja&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;FileTree Example&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;fileTree.css&quot; /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;file-tree&quot;&gt;
+        &lt;ul&gt;
+            &lt;li&gt;
+                &lt;span class=&quot;folder&quot;&gt;Root&lt;/span&gt;
+                &lt;ul&gt;
+                    &lt;li&gt;
+                        &lt;span class=&quot;folder&quot;&gt;Folder 1&lt;/span&gt;
+                        &lt;ul&gt;
+                            &lt;li&gt;&lt;span class=&quot;file&quot;&gt;file1.txt&lt;/span&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;span class=&quot;file&quot;&gt;file2.txt&lt;/span&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;span class=&quot;folder&quot;&gt;Folder 2&lt;/span&gt;
+                        &lt;ul&gt;
+                            &lt;li&gt;&lt;span class=&quot;file&quot;&gt;file3.txt&lt;/span&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+    &lt;script src=&quot;fileTree.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+
+</code></pre>
+<p>spanタグとulタグ（順序なしリスト）とliタグ（リストアイテム）を使用して、ファイルツリーを作成している。  </p>
+<p>ulタグとliタグでファイルツリー構造を作る。 </p>
+<p>spanタグは、フォルダ名とファイル名の表示と、後から機能を追加するために必要である。  </p>
+<p>具体的には、
+- フォルダ名のspanタグは、クラス属性folderを付加する。<br />
+folderクラスの要素のクリック時に、フォルダの中身（ドロップダウンリスト）の非表示/表示を切り替える機能を付加する。<br />
+- ファイル名のspanタグは、クラス属性fileを付加する。</p>
+<p>ファイルツリーは、divタグの中に入っている。<br />
+divタグには、file-treeクラスが付加されている。 <br />
+divタグで囲みクラス名を付加することで、スタイル適用の範囲をファイルツリーに限定できる。</p>
+<h2>CSSファイル（fileTree.css）:</h2>
+<pre><code class="language-css">.file-tree ul {
+    list-style-type: none;
+    padding-left: 20px;
+}
+
+.folder,
+.file {
+    cursor: pointer;
+}
+
+.folder:before {
+    content: &quot;▶&quot;;
+    display: inline-block;
+    margin-right: 6px;
+}
+
+.folder.open:before {
+    content: &quot;▼&quot;;
+}
+</code></pre>
+<p>ファイルツリーのフォルダ名の前につけている矢印の仕組みをリンク先で説明している。</p>
+<p>参照：
+    <a href="filetree-toggle.html">AWSのEC2インスタンスへMacからSSH接続する（接続失敗の解決策も記載）</a></p>
+
+<h2>JavaScriptファイル（fileTree.js）:</h2>
+<p>ファイルツリーのフォルダをクリックすることで、サブフォルダやファイルを表示/非表示にする動的な操作を実現している。</p>
+<pre><code class="language-javascript">document.addEventListener('DOMContentLoaded', function () {
+    const folders = document.querySelectorAll('.folder');
+
+    for (let i = 0; i &lt; folders.length; i++) {
+        folders[i].addEventListener('click', function () {
+            this.classList.toggle('open');
+            let ul = this.nextElementSibling;
+
+            if (ul) {
+                ul.style.display = ul.style.display === 'none' ? 'block' : 'none';
+            }
+        });
+
+        let ul = folders[i].nextElementSibling;
+
+        if (ul) {
+            ul.style.display = 'none';
+        }
+    }
+});
+</code></pre>
+<ul>
+<li>documentは、JavaScriptにおけるウェブページのHTML文書を表すオブジェクト。  </li>
+<li>DOMContentLoadedイベントが発生したときにfunction(){・・・}を実行する。<br />
+ DOMContentLoadedはHTML文書の解析が完了し、DOMツリーが構築されたタイミングを示す。  </li>
+<li>.folderクラスが適用された要素をすべて取得し、folders定数に代入する。  </li>
+</ul>
+<h5>for文の中身</h5>
+<ul>
+<li>
+<p>各フォルダ要素に対して、クリックイベントリスナーを追加する。<br />
+フォルダがクリックされると、function(){・・・}が実行されるようにする。</p>
+</li>
+<li>
+<p>this.classList.toggle('open');とは、
+thisのクラス属性にアクセスして、要素に'open'クラスがあるかどうかを確認する。<br />
+'open'クラスがあれば、それを削除し、無ければ追加する。  </p>
+</li>
+<li>
+<p>nextElementSibling はDOMプロパティであり、ある要素の次にある同階層（兄弟）の要素を取得する。<br />
+次の要素がない場合はnullを返す。</p>
+</li>
+<li>
+<p>? と : は、簡潔なif-else文の作成に使われている。<br />
+ulタグで囲まれたリスト要素が表示されていたらblock、非表示だったらnoneである。<br />
+ul.style.display = {（ul.style.display == 'none'） がTrueの場合は'block'、Falseの場合は'none'}</p>
+</li>
+</ul>
+<h5>クリックイベントリスナーの外</h5>
+<p>ページの読み込み時にすべてのサブフォルダやファイルをデフォルトで非表示にする。</p>
+<h1>webページで確認。使える。</h1>
+<p><img src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/3268288/e84bfa2a-ea58-0c05-4822-11ec0bade40c.png" alt="説明テキスト" width="600" height="400" /></p>
+<script>hljs.highlightAll();</script>
+</body>
+</html>

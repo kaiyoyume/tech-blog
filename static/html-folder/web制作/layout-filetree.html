@@ -1,0 +1,168 @@
+
+<!DOCTYPE html>
+<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Converted Markdown</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+</head>
+<body>
+  <p>投稿日 2023年03月23日</p>
+<h1>ページレイアウトのサイドバーにfiletreeを入れる</h1>
+<h2>chatGPTにページレイアウト構成を正確に指定して、サイドバーにfiletreeを入れる。</h2>
+<p>以前chatGPTに作ってもらったページレイアウト構成のプログラムと、ファイルツリーのプログラムを組み合わせたかった。</p>
+<p>しかし、前と同じ質問をしても同じプログラムを返してくれないので思い通りにはならなかった。<br />
+chatGPTに作ってもらった２つ以上のプログラムを結合したいときは、手動の方が早い。</p>
+<p>具体的に２つのプログラムを指定して、結合したプログラムを要求すれば上手くいくような気がするが、プログラムの入力方法が分からない。</p>
+<p>何回か質問し直したり、手直ししたりして完成した。</p>
+<p><img src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/3268288/59caa7fc-d56d-d264-23c8-89a4c4286c23.png" alt="説明テキスト" width="600" height="400" /></p>
+<p>下にプログラムを書く。</p>
+<h2>htmlファイル</h2>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ja&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Grid Layout with FileTree Example&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;gridLayout.css&quot; /&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;fileTree.css&quot; /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;Header&lt;/header&gt;
+    &lt;aside&gt;
+        &lt;div class=&quot;file-tree&quot;&gt;
+            &lt;ul&gt;
+                &lt;li&gt;
+                    &lt;span class=&quot;folder&quot;&gt;Root&lt;/span&gt;
+                    &lt;ul&gt;
+                        &lt;li&gt;
+                            &lt;span class=&quot;folder&quot;&gt;Folder 1&lt;/span&gt;
+                            &lt;ul&gt;
+                                &lt;li&gt;&lt;span class=&quot;file&quot;&gt;file1.txt&lt;/span&gt;&lt;/li&gt;
+                                &lt;li&gt;&lt;span class=&quot;file&quot;&gt;file2.txt&lt;/span&gt;&lt;/li&gt;
+                            &lt;/ul&gt;
+                        &lt;/li&gt;
+                        &lt;li&gt;
+                            &lt;span class=&quot;folder&quot;&gt;Folder 2&lt;/span&gt;
+                            &lt;ul&gt;
+                                &lt;li&gt;&lt;span class=&quot;file&quot;&gt;file3.txt&lt;/span&gt;&lt;/li&gt;
+                            &lt;/ul&gt;
+                        &lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/aside&gt;
+    &lt;main&gt;Main Content&lt;/main&gt;
+    &lt;footer&gt;Footer&lt;/footer&gt;
+    &lt;script src=&quot;fileTree.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h2>gridLayout.css</h2>
+<p>ページレイアウトのスタイルを指定するcssファイル</p>
+<pre><code class="language-css">* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+        &quot;header header&quot;
+        &quot;sidebar main&quot;
+        &quot;footer footer&quot;;
+    height: 100vh;
+    width: 100vw;
+}
+
+header {
+    grid-area: header;
+    background-color: #c09af3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+aside {
+    grid-area: sidebar;
+    background-color: #f8ccf5;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 5px;
+}
+
+main {
+    grid-area: main;
+    background-color: #fdfdfd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+footer {
+    grid-area: footer;
+    background-color: #c09af3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+</code></pre>
+<h2>fileTree.js</h2>
+<p>filetreeのフォルダの開閉機能のJavascriptファイル</p>
+<pre><code class="language-javascript">document.addEventListener('DOMContentLoaded', function () {
+    const folders = document.querySelectorAll('.folder');
+
+    for (let i = 0; i &lt; folders.length; i++) {
+        folders[i].addEventListener('click', function () {
+            this.classList.toggle('open');
+            let ul = this.nextElementSibling;
+
+            if (ul) {
+                ul.style.display = ul.style.display === 'none' ? 'block' : 'none';
+            }
+        });
+
+        let ul = folders[i].nextElementSibling;
+
+        if (ul) {
+            ul.style.display = 'none';
+        }
+    }
+});
+</code></pre>
+<h2>fileTree.css</h2>
+<p>fileTreeのスタイルを指定するcssファイル</p>
+<pre><code class="language-css">.file-tree ul {
+    list-style-type: none;
+    padding-left: 20px;
+}
+
+.folder,
+.file {
+    cursor: pointer;
+}
+
+.folder:before {
+    content: &quot;▶&quot;;
+    display: inline-block;
+    margin-right: 6px;
+}
+
+.folder.open:before {
+    content: &quot;▼&quot;;
+}
+</code></pre>
+<script>hljs.highlightAll();</script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Converted Markdown</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+</head>
+<body>
+  <p>投稿日　2023年3月21日</p>
+<h1>chatGPTに聞きながら、Cloud9でApacheのインストール確認・起動・停止</h1>
+<p>chatGPTに相談しながら、Cloud9でApacheを起動してホームページを作りたい。</p>
+<h2>１、chatGPTにcloud9にはApacheがインストールされているかを確認する方法を聞いてみた。</h2>
+<p>chatGPTが教えてくれたコマンド</p>
+<pre><code class="language-bash">#間違っている
+apache2 -v　　
+</code></pre>
+<p>このコマンドを実行すると"command not found"と返ってきた。  </p>
+<p>Cloud9には、Apacheがインストールされてないのではないかと思い、インストール方法をweb検索した。</p>
+<p>そうしたら、デフォルトでapacheがインストールされていることが分かった。</p>
+<p>更に、Cloud9でApacheのインストールを確認する方法をweb検索した。</p>
+<pre><code class="language-bash">httpd -v
+#Server version: Apache/2.4.55 ()
+#Server built:   Feb  9 2023 18:42:11
+</code></pre>
+<p>このコマンドを実行して、Apacheがデフォルトでインストールされていることを確認できた。</p>
+<p>とりあえずは、アップデートせずにこのまま進めることにした。</p>
+<h2>２、次にchatGPTにApacheの起動方法を聞いた。</h2>
+<p>「Cloud9には、デフォルトでApacheがインストールされており、起動する必要はありません。」と返ってきた。</p>
+<p>更に「インストールしても起動はかかっていないよね？」と聞いてみたら、</p>
+<p>「Cloud9では、Apacheが自動的に起動するわけではありません。手動でApacheを起動する必要があります。」</p>
+<p>と答えてくれて、下のコマンド教えてくれた。</p>
+<pre><code class="language-bash">#間違っている
+sudo service apache2 start
+</code></pre>
+<p>実行したら "Unit not found."と返ってきた。</p>
+<p>次に、web検索して見つけた方法を試した。</p>
+<pre><code class="language-bash">sudo systemctl start httpd    
+</code></pre>
+<p>これで、Apacheを起動できた。</p>
+<h2>2、Apacheが起動しているか確認する方法</h2>
+<pre><code class="language-bash">systemctl status httpd
+</code></pre>
+<p>起動していれば、Active: running　になっている。</p>
+<p>起動していなければ、Active: inactive (dead)になる。</p>
+<h2>３、Apacheを停止する方法</h2>
+<pre><code class="language-bash">sudo systemctl stop httpd
+</code></pre>
+<p>ちなみに、sudoは管理者権限がないと実行できないコマンドの先頭につける。</p>
+<p>Apacheの起動と停止は管理者権限が必要だが、起動しているか状態を確認するだけなら必要ない。</p>
+<h2>４、解決した疑問点をまとめる</h2>
+<h3>・web検索して分かったこと。</h3>
+<p>・Linuxディストリビューションによって、apache2とhttpdを使い分ける必要がある。</p>
+<p>・Cloud9ではhttpdである。</p>
+<h4>serviceとsystemctlの違い</h4>
+<h5>- service</h5>
+<p>serviceは、/etc/init.dにあるシェルスクリプトのファイルを指定し引数を与えると、シェルを実行してくれる。</p>
+<p>例えば、service apache2 startの場合は、/etc/init.d/apache2と言うシェルスクリプトにstartと言う引数を与えることで、apache2を実行してくれる。</p>
+<h5>- systemctl</h5>
+<p>一方、systemctlは/lib/systemdにある各サービスの定義ファイル（.serviceファイル）に基づいて動作する。</p>
+<p>systemctlは、Linuxシステムのサービスの管理を行うシステム管理用のツールである。</p>
+<p>管理されるサービスに対して、起動、停止、再起動、有効化、無効化などの操作を行うことができる。</p>
+<script>hljs.highlightAll();</script>
+</body>
+</html>

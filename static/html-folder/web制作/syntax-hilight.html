@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Converted Markdown</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+</head>
+<body>
+  <p>投稿日 2023年04月05日</p>
+<h1>Webページ上のコードブロックにシンタックスハイライトを適用する</h1>
+<h3>コードブロックとは、ソースコードやコードの一部を示すために使用される区間を指す。</h3>
+<p>HTMLではpreタグとcodeタグを組み合わせてコードブロックを表現することが一般的である。</p>
+<ul>
+<li>preタグは、前後の改行や空白をそのまま表示するためのタグである。</li>
+<li>codeタグはコードやコンピュータ上の要素を示すためのタグである。</li>
+</ul>
+<p>これらのタグを組み合わせることで、コードの構造を保持したままコードブロックを表示できる。</p>
+<h3>シンタックスハイライトは、ソースコードの構造や構文に基づいて異なる要素に色を付けることで読みやすくする。</h3>
+<p>ウェブページに埋め込まれたコードブロックに、シンタックスハイライトを適用することができる。
+この場合、highlight.jsやPrismなどのJavaScriptライブラリを使用することが一般的である。</p>
+<h2>コードブロックにシンタックスハイライトを適用するプログラムの例</h2>
+<p>html:</p>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;Example&lt;/title&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css&quot;&gt;
+  &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Pythonのプログラムを表示する例&lt;/h1&gt;
+  &lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;
+    def hello_world():
+        print(&quot;Hello, World!&quot;)
+
+    hello_world()
+  &lt;/code&gt;&lt;/pre&gt;
+
+  &lt;h1&gt;シェルコマンドを表示する例&lt;/h1&gt;
+  &lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;
+    chmod 400 key.pem
+  &lt;/code&gt;&lt;/pre&gt;
+
+  &lt;script&gt;hljs.highlightAll();&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h3>2つのscriptタグを使用して、まずライブラリを読み込み、次にライブラリを初期化し、シンタックスハイライトを適用する処理が行われている。</h3>
+<h4>1つ目のscriptタグは、src属性を使用してhighlight.jsのJavaScriptライブラリを読み込んでいる。</h4>
+<p>ここではCDN（Content Delivery Network）を使用して読み込んでいるが、ライブラリをローカルにダウンロードして使用することもできる。  </p>
+<p>CDNとは、インターネット上でコンテンツ（画像、動画、スタイルシート、JavaScriptファイルなど）を高速かつ効率的に配信するためのネットワークシステムである。  </p>
+<p>CDNは、世界中に分散配置されたサーバー群から構成されている。  </p>
+<p>これにより、ユーザーがアクセスする際に最も近いサーバーからコンテンツを取得できるようになる。</p>
+<pre><code class="language-html">&lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js&quot;&gt;&lt;/script&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css&quot;&gt;
+</code></pre>
+<h5>scriptタグの下のlinkタグは、HTMLファイルにhighlight.jsのCSSスタイルシートをリンクする。</h5>
+<p>CSSスタイルシートは、シンタックスハイライトの見た目（色、フォントスタイルなど）を定義している。</p>
+<p>linkタグは、HTML文書と外部リソース（通常はスタイルシート）を関連付けるために使用される。</p>
+<p>rel属性は、linkタグ内で使用され、リンクされた文書と現在の文書の関係を定義する。
+relは"relationship"（関係）の略。</p>
+<h4>２つ目のscriptタグは、ライブラリを初期化し、シンタックスハイライトを適用するためのコードを実行している。</h4>
+<p>hljs.highlightAll()は、ページ内のすべてのコードブロックにシンタックスハイライトを適用する関数。
+この関数を呼び出すことで、ページ内のコードブロックがシンタックスハイライトされた状態で表示される。</p>
+<h2>補足</h2>
+<p>MacのターミナルのシェルコマンドをWebページに表示したいと思い、codeタグのclass="language-zsh"にしたらシンタックスハイライトが適用されなかった。</p>
+<p>bashは適用された。</p>
+<script>hljs.highlightAll();</script>
+</body>
+</html>

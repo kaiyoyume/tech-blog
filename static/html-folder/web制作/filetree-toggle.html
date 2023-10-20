@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Converted Markdown</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+</head>
+<body>
+  <p>投稿日 2023年03月31日</p>
+<h1>ファイルツリーのフォルダ名をクリックしたらフォルダ名の前の矢印の向きが切り替わるようにする。</h1>
+<p>ファイルツリーのフォルダ名のspanタグの左側に矢印をつけたい。<br />
+フォルダ名をクリックすると矢印の向きが切り替わるするようにしたい。</p>
+<h2>まずは簡単な例で、spanタグに矢印をつける方法を理解する。</h2>
+<p>矢印をspanタグの左側に追加するには、styleタグの::before疑似要素を使用する。<br />
+::before疑似要素は、要素の内容の前に装飾を追加するために使用する。</p>
+<p>この例では、.arrow-rightクラスが適用された<span>要素の左側に、矢印（▶︎）を追加している。margin-rightプロパティを使って、矢印とテキストの間のスペースを調整できる。</p>
+<p>矢印のデザインやスタイルはカスタマイズできる。</p>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;Arrow Left Example&lt;/title&gt;
+  &lt;style&gt;
+    .arrow-right::before {
+      content: &quot;▶︎&quot;;
+      margin-right: 5px; /* 矢印とテキストの間のスペースを調整する */
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;span class=&quot;arrow-right&quot;&gt;Text with arrow on the left&lt;/span&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h1>矢印の向きが入れ替わるようにしていく。クリック時にクラスを切り替えて矢印の方向を変更する</h1>
+<h4>styleタグの説明</h4>
+<p>styleタグで右向き（▶︎）と下向き（▼）の２つの::before疑似要素を用意する。</p>
+<p>矢印のデフォルトスタイル（▶︎）と、arrow-downクラスが適用された場合のスタイル（▼）を定義している。</p>
+<h4>htmlのbodyの説明</h4>
+<p>フォルダ名のspanタグには、デフォルトの右向きの矢印（▶︎）を付加する。</p>
+<h4>scriptタグの説明</h4>
+<p>constは、定数の宣言に使用される。<br />
+idが"arrowElement"の要素のデフォルトのスタイルを取得し、arrowElementと名付ける。</p>
+<p>arrowElement.addEventListener('click',関数);とは、arrowElementのクリック時に関数を実行するイベントリスナーである。</p>
+<p>arrowElement.classList.toggle('arrow-down')は、arrowElementという要素のクラスリストにarrow-downというクラス名が存在する場合は削除し、存在しない場合は追加するという操作を行う。</p>
+<p>※タグには複数のリストを付加できる。クラスリストと呼ぶ。<br />
+※toggleとは、日本語訳すると「機能や状態のON/OFFを切り替える仕組み」である。</p>
+<p>arrowElementに'arrow-right'と'arrow-down'両方のクラスが適用されている時、片方の矢印しか表示されない。<br />
+かつ、後に記述されたルールが優先されので、Webページでは矢印の向きが切り替わる。</p>
+<p>優先度の説明は長くなるので、コードの下に書く。</p>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;Toggle Arrow Example&lt;/title&gt;
+  &lt;style&gt;
+    .arrow-right::before {
+      content: &quot;▶︎&quot;;
+      margin-right: 5px;
+    }
+
+    .arrow-down::before {
+      content: &quot;▼&quot;;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;span class=&quot;arrow-right&quot; id=&quot;arrowElement&quot;&gt;Click to toggle arrow direction&lt;/span&gt;
+
+  &lt;script&gt;
+    const arrowElement = document.getElementById('arrowElement'); 
+    arrowElement.addEventListener('click', () =&gt; {
+      arrowElement.classList.toggle('arrow-down');
+    });
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h2>arrowElementに'arrow'と'arrow-down'両方のクラスが適用されている時、片方の矢印しか表示されないのはなぜか。</h2>
+<p>これは、CSSのカスケード（継承）と特異性（詳細度）の仕組みによって決まる。</p>
+<p>CSSでは、複数のスタイルルールが同じ要素に適用される場合、特異性という概念に基づいてルールの優先順位が決まる。<br />
+特異性が高いルールほど、適用される確率が高くなる。<br />
+特異性は以下のように計算される。  </p>
+<ol>
+<li>インラインスタイル（要素のstyle属性に直接記述されたスタイル）が最も高い特異性を持つ。</li>
+<li>セレクタの中でIDセレクタ（#id）の数が次に高い特異性を持つ。</li>
+<li>セレクタの中でクラスセレクタ（.class）、属性セレクタ（[attr]）、および疑似クラス（:pseudo-class）の数が次に高い特異性を持つ。</li>
+<li>セレクタの中で要素セレクタ（element）および疑似要素（::pseudo-element）の数が最も低い特異性を持つ。</li>
+</ol>
+<p>上のコードでは、.arrow-right::beforeと.arrow-down::beforeの2つのスタイルルールがある。
+両方ともクラスセレクタと疑似要素を使用しているため、特異性は同じである。</p>
+<p>特異性が同じ場合、後に記述されたルールが優先される。</p>
+<p>arrowElementにarrow_rightとarrow-downの両方のクラスが適用されている場合、.arrow-down::beforeルールが優先されるため、矢印は下向きに表示される。<br />
+.arrow::beforeルールは上書きされ、表示されない。</p>
+<h3>（感想）</h3>
+<p>要素に複数のclassを付加できることを知らずclasslistの意味が最初は分からなかった。<br />
+toggleについても知らなかったので戸惑った。</p>
+<script>hljs.highlightAll();</script>
+</body>
+</html>

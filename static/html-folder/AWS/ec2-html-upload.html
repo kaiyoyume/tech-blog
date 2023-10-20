@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Converted Markdown</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+</head>
+<body>
+  <p>投稿日　2023年3月22日</p>
+<h1>MacからEC2にHTMLファイルを送信して、Webで公開してみた</h1>
+<p>MAMPで作成したWebページをEC２上で公開したい。</p>
+<p>MAMPのhdocフォルダに保存されているindex.htmlファイルをEC2上で公開してみようと思う。</p>
+<h2>Macのターミナルを起動</h2>
+<ol>
+<li>
+<p>EC2にssh接続する。（このターミナルウィンドウを以後、EC2と呼ぶ。）<br />
+<a href="mac-ec2-connect.html">AWSのEC2インスタンスへMacからSSH接続する（接続失敗の解決策も記載）</a></p>
+</li>
+<li>
+<p>ターミナルの新規ウィンドウを立ち上げる。（以後、ターミナルと呼ぶ。）
+この２つのターミナル画面から操作していく。</p>
+</li>
+</ol>
+<h2>EC2のホームディレクトリにhdocフォルダを作る。</h2>
+<pre><code class="language-bash">mkdir hdoc
+</code></pre>
+<h2>EC２のhdocフォルダにファイルをコピーするシェルスクリプトを作る。</h2>
+<p>VSCodeで、ec2_scp.shという名前のファイルを作成して、Macのホームディレクトリに保存する。</p>
+<p>c2_scp.shのコード</p>
+<pre><code class="language-bash">scp -i &quot;キーペアのフルパス&quot; $1 ec2-user@EC２のパブリック IPv4 DNS:/home/ec2-user/hdoc
+</code></pre>
+<p>$1は引数で、シェルスクリプトの実行時に送りたいファイルのパスを指定する。</p>
+<p>※キーペアとシェルスクリプトが同じフォルダにないので、キーペアはフルパスで書く。</p>
+<h2>ターミナルのホームディレクトリで、以下のコマンドを実行。</h2>
+<pre><code class="language-bash">sh c2_scp.sh /Applications/MAMP/htdocs/index.html
+</code></pre>
+<p>MAMPのhtdocsフォルダにあるindex.htmlファイルがEC2のhtdocフォルダに送信される。</p>
+<h2>EC2上で、ディレクトリからドキュメントルートへファイルをコピー</h2>
+<p>EC2のhdocディレクトリのindex.htmlをEC2のドキュメントルートへコピーする。</p>
+<p>EC2のホームディレクトリで、以下のコマンドを実行。</p>
+<pre><code class="language-bash">sudo cp hdoc/index.html /var/www/html
+</code></pre>
+<p>EC２のパブリックIPv4DNSをコピーしてchromeで検索すると、index.htmlファイルが表示される。</p>
+<script>hljs.highlightAll();</script>
+</body>
+</html>

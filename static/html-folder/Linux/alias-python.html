@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Converted Markdown</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+</head>
+<body>
+  <p>投稿日 2023年04月02日</p>
+<h1>alias設定を使い、Python コマンドで Python 3 が実行されるようにする</h1>
+<p>Macのターミナルのpythonコマンドをpython3にalias設定して、pythonと入力するとPython3が実行されるようにする。</p>
+<h1>一時的なaliasを作成したい場合</h1>
+<p>aliasコマンドを実行すると、現在のセッションでのみ有効なaliasが作成される。</p>
+<pre><code class="language-bash">alias python='python3'
+</code></pre>
+<h1>永続的なaliasを作成したい場合。</h1>
+<h2>1. ~/.zshrcファイルにaliasを追加する</h2>
+<p>aliasを永続的に保存するには、設定ファイルに追加する必要がある。</p>
+<pre><code class="language-bash">echo &quot;alias python='python3'&quot; &gt;&gt; ~/.zshrc
+
+</code></pre>
+<p>このコマンドは、設定ファイル（.zshrc）の末尾に新しいaliasを追加する。</p>
+<h2>2. 設定ファイルを更新するために、sourceコマンドを使用して、変更を再読み込みする</h2>
+<pre><code class="language-bash">source ~/.zshrc
+</code></pre>
+<p>この方法で新しいエイリアスがすぐに適用される。
+ターミナルを閉じて開き直しても新しいエイリアスが適用されている。</p>
+<h2>＜補足＞</h2>
+<p>ターミナルでコマンドを実行する際、aliasは通常のコマンドよりも優先される。
+python2を実行する必要がある場合は、'python2'と入力すればよい。</p>
+<script>hljs.highlightAll();</script>
+</body>
+</html>

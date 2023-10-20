@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Converted Markdown</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+</head>
+<body>
+  <p>投稿日 2023年03月26日</p>
+<h1>webブラウザからサーバのファイルを読み込む方法をchatGPTに学ぶ</h1>
+<p>chatGPTが作ったプログラムは信用できないので、以下の手順で必要な関数を得る。
+- まず動くプログラムを作ってもらいテストする。
+- OKだったら動くプログラムから必要な部分だけを関数にしてもらう。
+- その関数を使って、さらにテストプログラムを作ってもらいチェックする。</p>
+<h2>まず具体的なプログラムをchatGPT4に作ってもらう</h2>
+<p>私「bodyにボタン、テキスト表示エリア、テキスト入力エリアを配置する。クリックすると、入力エリアのテキストをファイル名として使用して、テキストエリアにファイルを読み込むようにしたい。サーバーのファイルを読み込むプログラムを書いて。」</p>
+<p>chatGPT4はフレームワークなどを使用したプログラムの例を教えてくれたが、シンプルな構成がよかったので付け加えた。</p>
+<p>私「apacheとjavascriptのみを使って」</p>
+<p>これで期待していた、シンプルな動く例を得られた。
+テストしたら、ちゃんと動いた。</p>
+<p>ApacheサーバーとJavaScriptを使用して、クライアントからサーバーのファイルを読み込む例を作成する。</p>
+<p>私「例題としてすごく参考になった。Javascriptの関数を書いてほしい。必要とする部分はファイル名を指定して、テキストファイルを返す関数が欲しい。」</p>
+<p>望み通りの関数が得られた。</p>
+<p>chatGPT4が作ってくれた、指定されたファイル名に基づいてテキストファイルの内容を取得し返すJavaScript関数</p>
+<pre><code class="language-javascript">async function fetchFileContent(filename) {
+    try {
+        const response = await fetch(filename);
+        if (response.ok) {
+            const fileContent = await response.text();
+            return fileContent;
+        } else {
+            throw new Error('ファイルの読み込みに失敗しました。');
+        }
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+
+</code></pre>
+<h2>使用例も書いてもらった</h2>
+<p>ファイル名を入力してボタンをクリックすると、指定されたファイル名のテキストファイルの内容を表示する</p>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;File Reader&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;input type=&quot;text&quot; id=&quot;filenameInput&quot; placeholder=&quot;ファイル名を入力&quot;&gt;
+    &lt;button id=&quot;loadBtn&quot;&gt;ファイルを読み込む&lt;/button&gt;
+    &lt;div id=&quot;fileContent&quot; style=&quot;border: 1px solid black; padding: 10px;&quot;&gt;&lt;/div&gt;
+    &lt;script&gt;
+        async function fetchFileContent(filename) {
+            try {
+                const response = await fetch(filename);
+                if (response.ok) {
+                    const fileContent = await response.text();
+                    return fileContent;
+                } else {
+                    throw new Error('ファイルの読み込みに失敗しました。');
+                }
+            } catch (error) {
+                console.error(error);
+                throw error;
+            }
+        }
+
+        document.getElementById('loadBtn').addEventListener('click', async function() {
+            const filename = document.getElementById('filenameInput').value;
+            if (!filename) {
+                alert('ファイル名を入力してください。');
+                return;
+            }
+
+            try {
+                const fileContent = await fetchFileContent(filename);
+                document.getElementById('fileContent').innerText = fileContent;
+            } catch (error) {
+                console.error(error);
+                alert('ファイルの読み込みに失敗しました。');
+            }
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h2>chatGPT4が教えてくれた注意事項</h2>
+<p>この方法ではセキュリティ上のリスクがある。<br />
+認証や権限の設定を行わない場合、誰でもサーバー上の任意のファイルにアクセスできる可能性がある。<br />
+実際のアプリケーションでこの方法を使用する場合は、適切な認証と権限の設定を行う必要がある。</p>
+<h2>初心者用の注意事項</h2>
+<p>Apacheが必要。  　
+ローカルでは動かない。</p>
+<script>hljs.highlightAll();</script>
+</body>
+</html>

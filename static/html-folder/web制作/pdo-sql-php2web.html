@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Converted Markdown</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+</head>
+<body>
+  <p>投稿日 2023年03月21日</p>
+<h1>PDOを使ってMySQLのテーブルをPHPファイルのWebページに表示してみた</h1>
+<h2>まずphpファイルを作成してwebブラウザで表示できることを確認する。</h2>
+<ol>
+<li>MAMPを起動。</li>
+<li>htmlファイルの雛形を用意。</li>
+<li>VSCodeを起動して、MAMPのhtdocsフォルダを開く。</li>
+<li>新規ファイルを作成し、htmlファイルの雛形をコピペしてhdoc.phpという名前で保存。</li>
+<li>chromeの検索バーで"http://localhost:8888/hdoc.php" を検索。表示されることを確認。</li>
+</ol>
+<p>という手順で行った。</p>
+<p>htmlファイルの雛形</p>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;ページタイトル&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;見出し1&lt;/h1&gt;
+    &lt;p&gt;段落1&lt;/p&gt;
+    &lt;h2&gt;見出し2&lt;/h2&gt;
+    &lt;p&gt;段落2&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h2>次に、MySQLのテーブルの表示に必要なコードを挿入する</h2>
+<p>hdoc.phpのbodyの段落1を消して、MySQLのテーブルの表示に必要なコードを挿入。</p>
+<p>＜MySQLサーバーへの接続に必要な指定＞
+- ホスト名、ユーザー名、パスワードはデフォルトだと"localhost"、"root"、"root"である。 <br />
+- portは、MySQLのデフォルトのポート番号は8889を設定している。<br />
+MAMPでMySQLのポート番号を確認するには、MAMPアプリの画面左上の"Preferences"を選択する。"Ports"タブを選択して、MySQLのポート番号を確認できる。<br />
+- dbnameは、接続したいデータベースの名前を選択する。</p>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;ページタイトル&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;見出し1&lt;/h1&gt;
+  &lt;?php
+    // MySQLサーバーへの接続
+    $servername = &quot;localhost&quot;; // ホスト名
+    $username = &quot;root&quot;; // ユーザー名
+    $password = &quot;root&quot;; // パスワード
+    $port = 8889; 
+    $dbname = &quot;shirokuma&quot;; // データベース名
+
+    try {
+        $conn = new PDO(&quot;mysql:host=$servername;port=$port;dbname=$dbname&quot;, $username, $password);
+        // PDOエラーモードを例外モードに設定
+        $conn-&gt;setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        echo &quot;Connected successfully&quot;.&quot; &lt;br&gt;&quot;;
+        echo &quot;&lt;br&gt;&quot;;
+        $stmt = $conn-&gt;prepare(&quot;SELECT * FROM menu&quot;);
+        $stmt-&gt;execute();
+        // set the resulting array to associative
+        // 結果を取得
+         $result = $stmt-&gt;fetchAll();
+
+        // 結果を表示
+        echo &quot;price  menu&quot;.&quot;&lt;br&gt;&quot;;
+    foreach($result as $row) {
+        echo $row['name'].&quot; &quot;.$row['price'].&quot;円&lt;br&gt;&quot;;
+        }
+    } catch(PDOException $e) {
+        echo &quot;Connection failed: &quot; . $e-&gt;getMessage();
+    }
+    ?&gt;
+
+    &lt;h2&gt;見出し2&lt;/h2&gt;
+    &lt;p&gt;段落2&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>chromeの検索バーで"http://localhost:8888/hdoc.php" を検索して、表示されることを確認する。</p>
+<p><img src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/3268288/4c5f6599-e758-1a20-b2b1-5513d0cffae6.png" alt="説明テキスト" width="600" height="400" /></p>
+<script>hljs.highlightAll();</script>
+</body>
+</html>

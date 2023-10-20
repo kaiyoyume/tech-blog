@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            ul {
+                display: none;
+                padding-left: 10px;
+                list-style-type: none;
+            }
+            li {
+                margin-bottom: 5px;
+            }
+            .folder,
+            .file {
+                cursor: pointer;
+            }
+            .file::before {
+                content: "📄";  
+                margin-right: 5px;
+            } 
+            .folder:before {
+                content: "▶";
+                display: inline-block;
+                margin-right: 6px;
+            }
+
+            .folder.open:before {
+                content: "▼";
+            }
+            .selected {
+             font-weight: bold; /* 太字にするスタイルを追加 */
+            }
+            .file:hover {
+                text-decoration: underline; /*ファイル名にカーソルを載せたときに下線を表示*/
+            }
+        </style>
+        <script>
+            let selectedFile = null;
+            function onfile(th){
+                const fname = th.getAttribute('data-filename');
+                window.parent.setfiletomain(fname);
+                if (selectedFile) {
+                    selectedFile.classList.remove('selected');
+                }
+                th.classList.add('selected');
+                selectedFile = th;
+            }
+            function onfolder(th){
+                th.classList.toggle('open');
+                const el = th.nextElementSibling;
+                if (el.style.display === '' || el.style.display === 'none') {
+                    el.style.display = 'block';
+                } else {
+                    el.style.display = 'none';
+                }
+            }
+        </script>
+    </head>
+    <body>
+    <p class="folder" onclick="onfolder(this)">自然言語処理</p><ul><li><span class="file" onclick="onfile(this)" data-filename="static/html-folder/自然言語処理/2-5.html">ゼロから作るDeepLearning❷の5章「RNN」をGoogle Colabで実装</span></li><li><span class="file" onclick="onfile(this)" data-filename="static/html-folder/自然言語処理/2-2.html">ゼロから作るDeepLearning❷の２章「自然言語と単語の分散表現」をGoogle Colabで実装</span></li><li><span class="file" onclick="onfile(this)" data-filename="static/html-folder/自然言語処理/2-3.html">ゼロから作るDeepLearning❷の３章「word2vec」をGoogle Colabで実装</span></li></ul><p class="folder" onclick="onfolder(this)">Linux</p><ul><li><span class="file" onclick="onfile(this)" data-filename="static/html-folder/Linux/alias-python.html">alias設定を使い、Python コマンドで Python 3 が実行されるようにする</span></li><li><span class="file" onclick="onfile(this)" data-filename="static/html-folder/Linux/2mac-ssh.html">２台のMacを公開鍵暗号方式でssh接続した</span></li></ul><p class="folder" onclick="onfolder(this)">AWS</p><ul><li><span class="file" onclick="onfile(this)" data-filename="static/html-folder/AWS/ec2-html-upload.html">MacからEC2にHTMLファイルを送信して、Webで公開してみた</span></li><li><span class="file" onclick="onfile(this)" data-filename="static/html-folder/AWS/mac-ec2-connect.html">AWSのEC2インスタンスへMacからSSH接続する（接続失敗の解決策も記載）</span></li><li><span class="file" onclick="onfile(this)" data-filename="static/html-folder/AWS/ec2-webserver.html">AWS上にWebサーバを作成した</span></li><li><span class="file" onclick="onfile(this)" data-filename="static/html-folder/AWS/apache9-start.html">chatGPTに聞きながら、Cloud9でApacheのインストール確認・起動・停止</span></li><li><span class="file" onclick="onfile(this)" data-filename="static/html-folder/AWS/ec2-lamp-fail.html">LAMPをEC2にインストールする（失敗し断念）</span></li><li><span class="file" onclick="onfile(this)" data-filename="static/html-folder/AWS/ec2-key-pair.html">AWSのEC2インスタンスのキーペアとは</span></li></ul><p class="folder" onclick="onfolder(this)">web制作</p><ul><li><span class="file" onclick="onfile(this)" data-filename="static/html-folder/web制作/from-web-serber-read.html">webブラウザからサーバのファイルを読み込む方法をchatGPTに学ぶ</span></li><li><span class="file" onclick="onfile(this)" data-filename="static/html-folder/web制作/syntax-hilight.html">Webページ上のコードブロックにシンタックスハイライトを適用する</span></li><li><span class="file" onclick="onfile(this)" data-filename="static/html-folder/web制作/first-filetree.html">ライブラリを使用せずに、簡単なFileTreeを作成する</span></li><li><span class="file" onclick="onfile(this)" data-filename="static/html-folder/web制作/layout-filetree.html">ページレイアウトのサイドバーにfiletreeを入れる</span></li><li><span class="file" onclick="onfile(this)" data-filename="static/html-folder/web制作/php-markdown2html.html">PHPを使用して、Markdownファイルをブラウザに表示する</span></li><li><span class="file" onclick="onfile(this)" data-filename="static/html-folder/web制作/web-read-server-chatGPT.html">webブラウザからサーバのファイルを読み込む方法をchatGPTに学ぶ</span></li><li><span class="file" onclick="onfile(this)" data-filename="static/html-folder/web制作/pdo-sql-php2web.html">PDOを使ってMySQLのテーブルをPHPファイルのWebページに表示してみた</span></li><li><span class="file" onclick="onfile(this)" data-filename="static/html-folder/web制作/mamp-sql.html">MacでMAMPのMySQLを操作する方法を一通り説明する</span></li><li><span class="file" onclick="onfile(this)" data-filename="static/html-folder/web制作/event-target.html">ファイルツリー全体にonclick属性を付加する。ツリーの中のどの要素がクリックをされたのかを特定する方法の下調べ</span></li><li><span class="file" onclick="onfile(this)" data-filename="static/html-folder/web制作/filetree-toggle.html">ファイルツリーのフォルダ名をクリックしたらフォルダ名の前の矢印の向きが切り替わるようにする。</span></li><li><span class="file" onclick="onfile(this)" data-filename="static/html-folder/web制作/sql-in-php2web.html">PDOを使ってMySQLのテーブルをPHPファイルのWebページに表示してみた</span></li><li><span class="file" onclick="onfile(this)" data-filename="static/html-folder/web制作/liveserver.html">VSCodeのHTTPサーバーを起動するための拡張機能「Live Server」</span></li><li><span class="file" onclick="onfile(this)" data-filename="static/html-folder/web制作/this-evenet.html">Jacascriptのイベントリスナーのthisとeventについて</span></li><li><span class="file" onclick="onfile(this)" data-filename="static/html-folder/web制作/shell_md2html.html">ディレクトリ内のMarkdownファイルを全てHTMLに変換するシェルスクリプトを作る</span></li><p class="folder" onclick="onfolder(this)">webアプリ制作</p><ul><li><span class="file" onclick="onfile(this)" data-filename="static/html-folder/web制作/webアプリ制作/chess-css.html">オセロの盤面の表示のCSS</span></li></ul><li><span class="file" onclick="onfile(this)" data-filename="static/html-folder/web制作/mamp-install.html">MacにMAMPをインストールする（2023/3/12時点）</span></li><li><span class="file" onclick="onfile(this)" data-filename="static/html-folder/web制作/first-pagelayout.html">ページレイアウトを設計する</span></li></ul>
+    </body>
+</html>

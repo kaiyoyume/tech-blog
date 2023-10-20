@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Converted Markdown</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+</head>
+<body>
+  <p>投稿日 2023年04月08日</p>
+<h1>オセロの盤面の表示のCSS</h1>
+<h2>オセロの表示はCSSのみで、可能である。</h2>
+<h2>まずはオセロの表示方法を確認する</h2>
+<p>chatGPT4に、「htmlでオセロを作りたい。まずは表示方法だけ知りたい。横並びに３つのセルがあり、１個目は中身が空白で、２個目は白の石、３個目は黒の石がある。」
+と聞いたら、作ってくれた。</p>
+<p>html:</p>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ja&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;オセロゲーム&lt;/title&gt;
+  &lt;style&gt;
+    /* CSS styles */
+    .container {
+      display: flex;
+    }
+
+    .cell {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: darkgreen;
+      border: 1px solid black;
+    }
+
+    .stone {
+      width: 90%;
+      height: 90%;
+      border-radius: 50%;
+    }
+
+    .black {
+      background-color: black;
+    }
+
+    .white {
+      background-color: white;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;container&quot;&gt;
+    &lt;div class=&quot;cell&quot;&gt;&lt;/div&gt; &lt;!-- 空白のセル --&gt;
+    &lt;div class=&quot;cell&quot;&gt;
+      &lt;div class=&quot;stone white&quot;&gt;&lt;/div&gt; &lt;!-- 白い石が入ったセル --&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;cell&quot;&gt;
+      &lt;div class=&quot;stone black&quot;&gt;&lt;/div&gt; &lt;!-- 黒い石が入ったセル --&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>border-radiusは、要素の角を丸くするために使用される。<br />
+border-radius: 50%; の場合、要素の角が要素の半径（要素のwidthの50%）で丸くなる。<br />
+これは、要素が正方形の場合、完全な円になることを意味する。  </p>
+<h2>オセロの初期設定の盤面を作る</h2>
+<p>chatGPT4に「オセロの初期設定のデータを作成して、それを表示したい。」<br />
+と聞いてみたら、作ってくれた。<br />
+しかし、8x8の盤面の真ん中に４つ石を置いているのだが、位置が上に１行ずれている。  </p>
+<p>「なんで、2次元配列の真ん中に石を置いてないの？」<br />
+と聞いたが、オセロの盤面データの初期設定では、真ん中に白と黒の石を交互に置くという説明をしてくれたが、プログラムを直してくれなかった。  </p>
+<p>「オセロの初期設定の盤面の２次元配列の石を、１行下にして」<br />
+と明確に修正して欲しい箇所を指摘したら、直してくれた。</p>
+<p>作ってもらったプログラムをwebページに表示してみら、ボードの右が無駄に長く、セルの枠に色がついていなかったので、そこも直してもらった。</p>
+<p>「boardの右が無駄に長い。後、cellのborderを黒にして。」<br />
+修正してくれたプログラムをweb表示してみたら、今度は問題なさそう。</p>
+<p>これで、完成した。</p>
+<p>完成バージョンのプログラムのみを載せておく。</p>
+<p>html:</p>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ja&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;オセロゲーム&lt;/title&gt;
+  &lt;style&gt;
+    .board {
+      display: grid;
+      grid-template-columns: repeat(8, 50px);
+      grid-template-rows: repeat(8, 50px);
+      gap: 1px;
+      background-color: darkgreen;
+      width: fit-content;
+      margin: 0 auto;
+    }
+
+    .cell {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid black;
+    }
+
+    .stone {
+      width: 90%;
+      height: 90%;
+      border-radius: 50%;
+    }
+
+    .black {
+      background-color: black;
+    }
+
+    .white {
+      background-color: white;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;board&quot; id=&quot;board&quot;&gt;&lt;/div&gt;
+
+  &lt;script&gt;
+    const boardElement = document.getElementById(&quot;board&quot;);
+    const initialBoard = [
+      ['', '', '', '', '', '', '', ''],
+      ['', '', '', '', '', '', '', ''],
+      ['', '', '', '', '', '', '', ''],
+      ['', '', '', 'black', 'white', '', '', ''],
+      ['', '', '', 'white', 'black', '', '', ''],
+      ['', '', '', '', '', '', '', ''],
+      ['', '', '', '', '', '', '', ''],
+      ['', '', '', '', '', '', '', '']
+    ];
+
+    function createCell(color) {
+      const cell = document.createElement(&quot;div&quot;);
+      cell.classList.add(&quot;cell&quot;);
+
+      if (color) {
+        const stone = document.createElement(&quot;div&quot;);
+        stone.classList.add(&quot;stone&quot;, color);
+        cell.appendChild(stone);
+      }
+
+      return cell;
+    }
+
+    function renderBoard(boardData) {
+      boardElement.innerHTML = '';
+
+      boardData.forEach(row =&gt; {
+        row.forEach(color =&gt; {
+          const cell = createCell(color);
+          boardElement.appendChild(cell);
+        });
+      });
+    }
+
+    renderBoard(initialBoard);
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<script>hljs.highlightAll();</script>
+</body>
+</html>
